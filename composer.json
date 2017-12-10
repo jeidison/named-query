@@ -1,6 +1,7 @@
 {
   "name": "jeidison/named-query",
   "description": "Package para armazenar SQL's",
+  "license": "MIT",
   "authors": [
     {
       "name": "Named Query",
