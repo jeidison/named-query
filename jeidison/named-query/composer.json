@@ -1,0 +1,14 @@
+{
+  "name": "jeidison/named-query",
+  "description": "Package para armazenar SQL's",
+  "authors": [
+    {
+      "name": "Named Query",
+      "email": "jeidison.farias@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.3.0"
+  }
+}
