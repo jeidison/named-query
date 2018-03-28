@@ -10,7 +10,7 @@ class NamedQueryApplication
     public static function normalize($name, array $parans)
     {
         $newQuery = "";
-        $xmlDoc = new DOMDocument();
+        $xmlDoc   = new DOMDocument();
         $xmlDoc->load(database_path('named-query/named-query.xml'));
         $searchNode = $xmlDoc->getElementsByTagName("query");
         foreach ($searchNode as $node) {

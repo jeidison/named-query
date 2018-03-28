@@ -6,25 +6,20 @@ use Illuminate\Support\ServiceProvider;
 
 class NamedQueryServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     *
-     * @return void
-     */
+
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/named-querys.xml' => database_path('named-query/named-query.xml'),
-        ]);
+            __DIR__ . '../database/named-querys.xml' => database_path('named-query/named-query.xml'),
+        ], 'NamedQuery');
     }
 
-    /**
-     * Register the application services.
-     *
-     * @return void
-     */
     public function register()
     {
-        $this->app->make('Jeidison\NamedQuery\NamedQueryController');
+        $this->app->make('Jeidison\NamedQuery\NamedQueryService');
+    }
+
+    public function provides() {
+        return ['NamedQuery'];
     }
 }
