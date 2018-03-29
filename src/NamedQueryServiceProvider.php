@@ -10,7 +10,7 @@ class NamedQueryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../databaseNamedQuery/named-querys.xml' => database_path('named-query/named-query.xml'),
+            __DIR__ . '/../database/named-querys.xml' => database_path('named-query/named-query.xml'),
         ], 'NamedQuery');
     }
 
