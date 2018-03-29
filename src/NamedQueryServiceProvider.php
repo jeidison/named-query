@@ -10,13 +10,15 @@ class NamedQueryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '../database/named-querys.xml' => database_path('named-query/named-query.xml'),
+            __DIR__ . '/../databaseNamedQuery/named-querys.xml' => database_path('named-query/named-query.xml'),
         ], 'NamedQuery');
     }
 
     public function register()
     {
-        $this->app->make('Jeidison\NamedQuery\NamedQueryService');
+        $this->app->singleton('named-query', function () {
+            return new NamedQueryService();
+        });
     }
 
     public function provides() {
