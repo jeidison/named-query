@@ -7,33 +7,26 @@ use DOMDocument;
 class NamedQueryApplication
 {
 
-    public static function normalize($name, array $parans)
+    public static function normalize($name, array $params)
     {
-        $newQuery = "";
-        $xmlDoc   = new DOMDocument();
+        $xmlDoc = new DOMDocument();
         $xmlDoc->load(database_path('named-query/named-query.xml'));
         $searchNode = $xmlDoc->getElementsByTagName("query");
         foreach ($searchNode as $node) {
             $queryName = $node->getAttribute('name');
-            if ($queryName != $name)
-                continue;
-
-            $newQuery = self::buildSql($node, $parans);
+            if ($queryName == $name) {
+                return self::buildSql($node, $params);
+            }
         }
-
-        return $newQuery;
     }
 
-    private static function buildSql($node, array $parans)
+    private static function buildSql($node, array $params)
     {
-        $index = 1;
         $newQuery = $node->nodeValue;
-        foreach ($parans as $param) {
-            $newQuery = str_replace('?' . $index, "'".$param."'", $newQuery);
-            $index++;
+        foreach ($params as $key => $param) {
+            $newQuery = str_replace(':' . $key, "'" . $param . "'", $newQuery);
         }
-
-        return $newQuery = $newQuery.";";
+        return $newQuery;
     }
 
 }
