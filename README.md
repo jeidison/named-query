@@ -1,9 +1,22 @@
-# named-query
-1 - composer require jeidison/named-query "dev-master"
+# Instalação
 
-2 - php artisan vendor:publish (Escolha a opção NamedQuery)
+Instalação via composer
 
-3 - Adicione duas SQLs no arquivo "database/named-query/named-query.xml"
+```bash
+$ composer require jeidison/named-query
+```
 
-4 - Para executar a SQL : NamedQuery::executeNamedQuery('nomedaquery',[parametros]);
+```bash
+$ php artisan vendor:publish
+```
+
+Escolha a opção: NamedQuery
+
+* Adicione suas SQL's no arquivo "database/queries/named-query.xml"
+
+Executando uma SQL:
+
+```bash
+NamedQuery::executeNamedQuery('nomedaquery',['par1' => $par1, 'par2' => $par2]);
+```
 
