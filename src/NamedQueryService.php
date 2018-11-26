@@ -8,12 +8,11 @@ use Illuminate\Support\Facades\DB;
 class NamedQueryService
 {
 
-    public function executeNamedQuery($module, $name, $params = array(), $resultClass = null, $isBind = true, $debug = false)
+    public function executeNamedQuery($module, $name, $params = array(), $resultClass = null, $debug = false)
     {
-        $query = $this->normalize($module, $name, $params, $isBind);
+        $query = $this->normalize($module, $name, $params);
         if ($debug) {
-            echo $query;
-            die;
+            dd($query);
         }
 
         return $this->executeQuery($query, $resultClass);
@@ -25,28 +24,67 @@ class NamedQueryService
         if ($resultClass == null) {
             return $results;
         }
+        return $this->toObject($results, $resultClass);
+    }
+
+    private function toObject($results, $resultClass)
+    {
+        if (count($results) == 0) {
+            return null;
+        }
 
         if (count($results) == 1) {
-            return new $resultClass((array)$results);
-        } elseif (count($results) == 0) {
-            return null;
+            $results = $results[0];
+            $instance = new $resultClass();
+            $fill = ['*'];
+            $values = ($fill) ? (array) $results : array_intersect_key( (array) $results, array_flip($fill));
+            $instance->setRawAttributes($values, true);
+            $instance->exists = true;
+            return $instance;
         }
 
         $listObj = collect();
         foreach ($results as $result) {
-            $object = new $resultClass((array)$result);
-            $listObj->push($object);
+            $instance = new $resultClass();
+            $values = (['*']) ? (array) $result : array_intersect_key( (array) $result, array_flip(['*']));
+            $instance->setRawAttributes($values, true);
+            $instance->exists = true;
+            $listObj->push($instance);
         }
 
         return $listObj;
     }
 
-    private function normalize($module, $name, array $params, $isBind)
+    private function normalize($module, $name, array $params)
+    {
+        $settings = config('named-query');
+        $query = $this->getSqlAsString($settings, $module, $name);
+        if ($settings['type-bind'] == TypeBind::TWO_POINTS) {
+            return $this->bind($query, $params);
+        }
+        return $this->buildSql($query, $params);
+    }
+
+    private function getSqlAsString($settings, $module, $name)
+    {
+        $path = $settings['path-sql'] . "/" . $module;
+        if ($settings['type'] == TypeFile::XML) {
+            return $this->getSqlFromXml($path, $name);
+        }
+        return $this->getSqlFromPhp($path, $name);
+    }
+
+    private function getSqlFromPhp($path, $name)
+    {
+        $path = $path . '.php';
+        include_once($path);
+        return constant($name);
+    }
+
+    private function getSqlFromXml($path, $name)
     {
         $xmlDoc = new DOMDocument();
-        $settings = config('named-query');
-
-        $path = $settings['path-sql'] . "/" . $module . '.xml';
+        $path = $path . '.xml';
         $xmlDoc->load($path);
         $searchNode = $xmlDoc->getElementsByTagName("query");
         foreach ($searchNode as $node) {
@@ -54,10 +92,7 @@ class NamedQueryService
             if ($queryName != $name) {
                 continue;
             }
-            if ($isBind) {
-                return $this->bind($node->nodeValue, $params);
-            }
-            return $this->buildSql($node, $params);
+            return $node->nodeValue;
         }
     }
 
