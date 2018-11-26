@@ -11,7 +11,7 @@ class NamedQueryServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/named-query.php' => config_path('named-query.php'),
-        ], 'config');
+        ], 'NamedQuery');
 
         $this->publishes([
             __DIR__ . '/../database/queries/named-querys.xml' => database_path('named-query/queries/named-query.xml'),

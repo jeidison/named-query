@@ -44,8 +44,10 @@ class NamedQueryService
     private function normalize($module, $name, array $params, $isBind)
     {
         $xmlDoc = new DOMDocument();
-        $settings = config_path('named-query.php');
-        $xmlDoc->load($settings['path-sql'] . "/" . $module . "/" . $name . '.xml');
+        $settings = config('named-query');
+
+        $path = $settings['path-sql'] . "/" . $module . '.xml';
+        $xmlDoc->load($path);
         $searchNode = $xmlDoc->getElementsByTagName("query");
         foreach ($searchNode as $node) {
             $queryName = $node->getAttribute('name');
