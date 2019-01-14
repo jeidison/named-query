@@ -6,6 +6,8 @@
 $ composer require jeidison/named-query
 ```
 
+# Publicando as configurações
+
 ```bash
 $ php artisan vendor:publish --provider="Jeidison\NamedQuery\NamedQueryServiceProvider"
 ```
