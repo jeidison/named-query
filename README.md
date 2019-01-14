@@ -49,8 +49,8 @@ WHERE numero        = :numero
 ```
 
 # Atenção
-Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::XML``` todas SQLs devem está em arquivo XML. 
-Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::PHP``` todas SQLs devem está em arquivo PHP.
+* Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::XML``` todas SQLs devem está em arquivo XML. 
+* Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::PHP``` todas SQLs devem está em arquivo PHP.
 
 # Executando uma SQL
 
