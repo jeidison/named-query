@@ -49,7 +49,8 @@ WHERE numero        = :numero
 ```
 
 # Atenção
-Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::XML``` As SQLs devem está no arquivo XML, da mesma forma, se a configuração estiver ```'type' => Jeidison\NamedQuery\TypeFile::PHP```, As SQLs devem está no arquivo PHP.
+Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::XML``` todas SQLs devem está em arquivo XML. 
+Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::PHP``` todas SQLs devem está em arquivo PHP.
 
 # Executando uma SQL
 
@@ -63,7 +64,7 @@ NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
 ]);
 ```
 
-Dessa forma a SQL é executada e o result é do tipo stdClass. Caso queira um tipo diferente de retorno execute da sequinte forma:
+Dessa forma a SQL é executada e o resultado da consulta é do tipo stdClass. Caso queira um tipo diferente, execute da sequinte forma:
 
 # Executando uma SQL com ResultClass
 
