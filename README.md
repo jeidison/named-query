@@ -64,7 +64,8 @@ NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
 ]);
 ```
 
-Dessa forma a SQL é executada e o resultado da consulta é do tipo stdClass. Caso queira um tipo diferente, execute da sequinte forma:
+Desta forma a SQL será executada e o resultado da consulta será do tipo stdClass. Caso queira um tipo diferente, execute da sequinte forma:
+
 
 # Executando uma SQL com ResultClass
 
