@@ -49,10 +49,10 @@ WHERE numero        = :numero
 # Atenção
 Se você configurar o type no arquivo  ``` config/named-query.php ``` como ```Jeidison\NamedQuery\TypeFile::XML``` As SQLs devem está no arquivo XML, da mesma forma, se a configuração estiver ```'type' => Jeidison\NamedQuery\TypeFile::PHP```, As SQLs devem está no arquivo PHP.
 
-# Executando uma SQL:
+# Executando uma SQL
 
 ```php
-NamedQuery::executeNamedQuery('find_nfe_by_key', [
+NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
     'numero'        => $numero,
     'cnpj_emitente' => $cnpjEmitente,
     'serie'         => $serie,
@@ -61,3 +61,28 @@ NamedQuery::executeNamedQuery('find_nfe_by_key', [
 ]);
 ```
 
+Dessa forma a SQL é executada e o result é do tipo stdClass. Caso queira um tipo diferente de retorno execute da sequinte forma:
+
+# Executando uma SQL com ResultClass
+
+```php
+NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
+    'numero'        => $numero,
+    'cnpj_emitente' => $cnpjEmitente,
+    'serie'         => $serie,
+    'tpamb'         => $tpAmb,
+    'mod'           => $mod,
+], NFe::class);
+```
+
+# Debugando a SQL construída 
+
+```php
+NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
+    'numero'        => $numero,
+    'cnpj_emitente' => $cnpjEmitente,
+    'serie'         => $serie,
+    'tpamb'         => $tpAmb,
+    'mod'           => $mod,
+], NFe::class, true);
+```
