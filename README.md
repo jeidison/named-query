@@ -55,7 +55,7 @@ WHERE numero        = :numero
 # Executando uma SQL
 
 ```php
-NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
+NamedQuery::executeNamedQuery('nfe/named-querys', 'find_nfe_by_key', [
     'numero'        => $numero,
     'cnpj_emitente' => $cnpjEmitente,
     'serie'         => $serie,
@@ -70,7 +70,7 @@ Desta forma a SQL será executada e o resultado da consulta será do tipo stdCla
 # Executando uma SQL com ResultClass
 
 ```php
-NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
+NamedQuery::executeNamedQuery('nfe/named-querys', 'find_nfe_by_key', [
     'numero'        => $numero,
     'cnpj_emitente' => $cnpjEmitente,
     'serie'         => $serie,
@@ -82,7 +82,7 @@ NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
 # Debugando a SQL construída 
 
 ```php
-NamedQuery::executeNamedQuery('nfe', 'find_nfe_by_key', [
+NamedQuery::executeNamedQuery('nfe/named-querys', 'find_nfe_by_key', [
     'numero'        => $numero,
     'cnpj_emitente' => $cnpjEmitente,
     'serie'         => $serie,
