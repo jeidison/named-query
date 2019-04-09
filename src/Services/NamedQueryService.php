@@ -25,10 +25,13 @@ class NamedQueryService
     {
         $results = DB::select(DB::raw($query));
         if ($resultClass == null) {
+            if ($results == null || count($results) == 0) {
+                return null;
+            }
             return $results;
         }
 
-        if ($results == null) {
+        if ($results == null || count($results) == 0) {
             return null;
         }
 
