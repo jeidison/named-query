@@ -1,18 +1,21 @@
 <?php
 
-namespace Jeidison\NamedQuery;
+namespace Jeidison\NamedQuery\Services;
 
 use DOMDocument;
 use Illuminate\Support\Facades\DB;
+use Jeidison\NamedQuery\Enums\TypeBind;
+use Jeidison\NamedQuery\Enums\TypeFile;
 
 class NamedQueryService
 {
 
-    public function executeNamedQuery($module, $name, $params = array(), $resultClass = null, $debug = false)
+    public function executeNamedQuery(string $name, string $module = 'named-query', array $params = null,
+                                      $resultClass = null, bool $debug = false)
     {
         $query = $this->normalize($module, $name, $params);
         if ($debug) {
-            dd($query);
+            return $query;
         }
 
         return $this->executeQuery($query, $resultClass);
@@ -24,34 +27,25 @@ class NamedQueryService
         if ($resultClass == null) {
             return $results;
         }
+
+        if ($results == null) {
+            return null;
+        }
+
         return $this->toObject($results, $resultClass);
     }
 
     private function toObject($results, $resultClass)
     {
-        if (count($results) == 0) {
-            return null;
-        }
-
         if (count($results) == 1) {
-            $results = $results[0];
-            $instance = new $resultClass();
-            $fill = ['*'];
-            $values = ($fill) ? (array) $results : array_intersect_key( (array) $results, array_flip($fill));
-            $instance->setRawAttributes($values, true);
-            $instance->exists = true;
-            return $instance;
+            return $this->hydrateObject($resultClass, $results[0]);
         }
 
         $listObj = collect();
         foreach ($results as $result) {
-            $instance = new $resultClass();
-            $values = (['*']) ? (array) $result : array_intersect_key( (array) $result, array_flip(['*']));
-            $instance->setRawAttributes($values, true);
-            $instance->exists = true;
-            $listObj->push($instance);
+            $object = $this->hydrateObject($resultClass, $result);
+            $listObj->push($object);
         }
-
         return $listObj;
     }
 
@@ -60,14 +54,14 @@ class NamedQueryService
         $settings = config('named-query');
         $query = $this->getSqlAsString($settings, $module, $name);
         if ($settings['type-bind'] == TypeBind::TWO_POINTS) {
-            return $this->bind($query, $params);
+            return $this->bindTwoPoints($query, $params);
         }
-        return $this->buildSql($query, $params);
+        return $this->buildNumber($query, $params);
     }
 
     private function getSqlAsString($settings, $module, $name)
     {
-        $path = $settings['path-sql'] . "/" . $module;
+        $path = $settings['path-sql'] . DIRECTORY_SEPARATOR . $module;
         if ($settings['type'] == TypeFile::XML) {
             return $this->getSqlFromXml($path, $name);
         }
@@ -96,7 +90,7 @@ class NamedQueryService
         }
     }
 
-    private function buildSql($node, array $params)
+    private function buildNumber($node, array $params)
     {
         $index = 1;
         $newQuery = $node->nodeValue;
@@ -107,7 +101,7 @@ class NamedQueryService
         return $newQuery;
     }
 
-    private function bind($query, array $params)
+    private function bindTwoPoints($query, array $params)
     {
         foreach ($params as $key => $param) {
             $query = str_replace(':' . $key, "'" . $param . "'", $query);
@@ -115,4 +109,13 @@ class NamedQueryService
         return $query;
     }
 
+    private function hydrateObject($resultClass, $data)
+    {
+        $instance = new $resultClass();
+        $fill     = array('*');
+        $values   = ($fill) ? (array) $data : array_intersect_key( (array) $data, array_flip($fill));
+        $instance->setRawAttributes($values, true);
+        $instance->exists = true;
+        return $instance;
+    }
 }

@@ -1,0 +1,8 @@
+<querys>
+    <query name="courses_student">
+        SELECT * FROM TAB1 WHERE PAR1 = ?1
+    </query>
+    <query name="courses_student_2">
+        SELECT * FROM TAB2 WHERE PAR2 = ?1
+    </query>
+</querys>

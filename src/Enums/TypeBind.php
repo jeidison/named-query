@@ -1,6 +1,6 @@
 <?php
 
-namespace Jeidison\NamedQuery;
+namespace Jeidison\NamedQuery\Enums;
 
 class TypeBind
 {
