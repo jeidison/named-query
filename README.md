@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jeidison/named-query.svg?branch=master)](https://travis-ci.org/jeidison/named-query)
+
 # Instalação
 
 # Instalação via composer
